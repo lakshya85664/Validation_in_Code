@@ -1,0 +1,41 @@
+{
+  "expected_status": "invalid",
+  "passed": true,
+  "request": {
+    "arguments": {
+      "amount": 0,
+      "customer_request": "The item was damaged.",
+      "order_id": "ORD-1001",
+      "reason": "damaged"
+    },
+    "name": "refund.request",
+    "request_id": "evidence-invalid-001",
+    "version": "1.0.0"
+  },
+  "result": {
+    "data": {
+      "errors": [
+        {
+          "field": "amount",
+          "message": "Input should be greater than 0",
+          "type": "greater_than"
+        }
+      ],
+      "stage": "schema"
+    },
+    "events": [
+      {
+        "event": "validation.started",
+        "tool": "refund.request"
+      },
+      {
+        "event": "validation.rejected",
+        "stage": "schema"
+      }
+    ],
+    "next_action": "correct_arguments",
+    "status": "invalid"
+  },
+  "scenario": "task5_invalid_input",
+  "source": "actual_gateway_execution"
+}

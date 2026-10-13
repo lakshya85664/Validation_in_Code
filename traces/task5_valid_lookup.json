@@ -1,0 +1,47 @@
+{
+  "expected_status": "ok",
+  "passed": true,
+  "request": {
+    "arguments": {
+      "channel": "web",
+      "order_id": "ORD-1001"
+    },
+    "name": "order.lookup",
+    "request_id": "evidence-lookup-001",
+    "version": "1.0.0"
+  },
+  "result": {
+    "data": {
+      "order_id": "ORD-1001",
+      "refundable": true,
+      "status": "delivered",
+      "total_amount": 500.0
+    },
+    "events": [
+      {
+        "event": "validation.started",
+        "tool": "order.lookup"
+      },
+      {
+        "event": "validation.passed",
+        "stage": "schema"
+      },
+      {
+        "event": "validation.passed",
+        "stage": "business"
+      },
+      {
+        "event": "validation.completed",
+        "valid": true
+      },
+      {
+        "event": "tool.execution.completed",
+        "tool": "order.lookup"
+      }
+    ],
+    "next_action": "none",
+    "status": "ok"
+  },
+  "scenario": "task5_valid_lookup",
+  "source": "actual_gateway_execution"
+}

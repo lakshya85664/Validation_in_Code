@@ -1,0 +1,27 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "channel": {
+      "enum": [
+        "web",
+        "mobile",
+        "support"
+      ],
+      "title": "Channel",
+      "type": "string"
+    },
+    "order_id": {
+      "maxLength": 20,
+      "minLength": 8,
+      "pattern": "^ORD-\\d{4,16}$",
+      "title": "Order Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "order_id",
+    "channel"
+  ],
+  "title": "OrderLookupInput",
+  "type": "object"
+}

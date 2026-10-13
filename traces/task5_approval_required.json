@@ -1,0 +1,50 @@
+{
+  "expected_status": "needs_approval",
+  "passed": true,
+  "request": {
+    "arguments": {
+      "amount": 200,
+      "customer_request": "The delivered item was damaged.",
+      "order_id": "ORD-1001",
+      "reason": "damaged"
+    },
+    "name": "refund.request",
+    "request_id": "evidence-approval-001",
+    "version": "1.0.0"
+  },
+  "result": {
+    "data": {
+      "errors": [
+        {
+          "code": "approval_required"
+        }
+      ]
+    },
+    "events": [
+      {
+        "event": "validation.started",
+        "tool": "refund.request"
+      },
+      {
+        "event": "validation.passed",
+        "stage": "schema"
+      },
+      {
+        "event": "validation.passed",
+        "stage": "business"
+      },
+      {
+        "event": "validation.passed",
+        "stage": "evidence"
+      },
+      {
+        "event": "validation.needs_approval",
+        "stage": "approval"
+      }
+    ],
+    "next_action": "request_approval",
+    "status": "needs_approval"
+  },
+  "scenario": "task5_approval_required",
+  "source": "actual_gateway_execution"
+}

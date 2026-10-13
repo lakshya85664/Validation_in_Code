@@ -1,0 +1,42 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "amount": {
+      "exclusiveMinimum": 0,
+      "maximum": 100000,
+      "title": "Amount",
+      "type": "number"
+    },
+    "customer_request": {
+      "maxLength": 500,
+      "minLength": 10,
+      "title": "Customer Request",
+      "type": "string"
+    },
+    "order_id": {
+      "maxLength": 20,
+      "minLength": 8,
+      "pattern": "^ORD-\\d{4,16}$",
+      "title": "Order Id",
+      "type": "string"
+    },
+    "reason": {
+      "enum": [
+        "duplicate",
+        "damaged",
+        "not_delivered",
+        "other"
+      ],
+      "title": "Reason",
+      "type": "string"
+    }
+  },
+  "required": [
+    "order_id",
+    "amount",
+    "reason",
+    "customer_request"
+  ],
+  "title": "RefundRequestInput",
+  "type": "object"
+}

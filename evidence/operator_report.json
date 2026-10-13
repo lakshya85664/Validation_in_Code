@@ -1,0 +1,284 @@
+{
+  "assessment": "Topic 5 \u2014 Validation in Code",
+  "generated_at_utc": "2026-10-13T07:52:47.504480+00:00",
+  "limitations": [
+    "The provider is a fake provider; no real refunds are issued.",
+    "Rate limiting and idempotency use in-memory process-local storage.",
+    "The report records the test-suite run that occurred before these scenarios; it does not include tests added afterward."
+  ],
+  "scenarios": {
+    "details": [
+      {
+        "expected_status": "ok",
+        "passed": true,
+        "request": {
+          "arguments": {
+            "channel": "web",
+            "order_id": "ORD-1001"
+          },
+          "name": "order.lookup",
+          "request_id": "evidence-lookup-001",
+          "version": "1.0.0"
+        },
+        "result": {
+          "data": {
+            "order_id": "ORD-1001",
+            "refundable": true,
+            "status": "delivered",
+            "total_amount": 500.0
+          },
+          "events": [
+            {
+              "event": "validation.started",
+              "tool": "order.lookup"
+            },
+            {
+              "event": "validation.passed",
+              "stage": "schema"
+            },
+            {
+              "event": "validation.passed",
+              "stage": "business"
+            },
+            {
+              "event": "validation.completed",
+              "valid": true
+            },
+            {
+              "event": "tool.execution.completed",
+              "tool": "order.lookup"
+            }
+          ],
+          "next_action": "none",
+          "status": "ok"
+        },
+        "scenario": "task5_valid_lookup",
+        "source": "actual_gateway_execution"
+      },
+      {
+        "expected_status": "invalid",
+        "passed": true,
+        "request": {
+          "arguments": {
+            "amount": 0,
+            "customer_request": "The item was damaged.",
+            "order_id": "ORD-1001",
+            "reason": "damaged"
+          },
+          "name": "refund.request",
+          "request_id": "evidence-invalid-001",
+          "version": "1.0.0"
+        },
+        "result": {
+          "data": {
+            "errors": [
+              {
+                "field": "amount",
+                "message": "Input should be greater than 0",
+                "type": "greater_than"
+              }
+            ],
+            "stage": "schema"
+          },
+          "events": [
+            {
+              "event": "validation.started",
+              "tool": "refund.request"
+            },
+            {
+              "event": "validation.rejected",
+              "stage": "schema"
+            }
+          ],
+          "next_action": "correct_arguments",
+          "status": "invalid"
+        },
+        "scenario": "task5_invalid_input",
+        "source": "actual_gateway_execution"
+      },
+      {
+        "expected_status": "denied",
+        "passed": true,
+        "request": {
+          "arguments": {
+            "amount": 200,
+            "customer_request": "The delivered item was damaged.",
+            "order_id": "ORD-1001",
+            "reason": "damaged"
+          },
+          "name": "refund.request",
+          "request_id": "evidence-denied-001",
+          "version": "1.0.0"
+        },
+        "result": {
+          "data": {},
+          "events": [],
+          "next_action": "request_authorization",
+          "status": "denied"
+        },
+        "scenario": "task5_unauthorized_refund",
+        "source": "actual_gateway_execution"
+      },
+      {
+        "expected_status": "needs_approval",
+        "passed": true,
+        "request": {
+          "arguments": {
+            "amount": 200,
+            "customer_request": "The delivered item was damaged.",
+            "order_id": "ORD-1001",
+            "reason": "damaged"
+          },
+          "name": "refund.request",
+          "request_id": "evidence-approval-001",
+          "version": "1.0.0"
+        },
+        "result": {
+          "data": {
+            "errors": [
+              {
+                "code": "approval_required"
+              }
+            ]
+          },
+          "events": [
+            {
+              "event": "validation.started",
+              "tool": "refund.request"
+            },
+            {
+              "event": "validation.passed",
+              "stage": "schema"
+            },
+            {
+              "event": "validation.passed",
+              "stage": "business"
+            },
+            {
+              "event": "validation.passed",
+              "stage": "evidence"
+            },
+            {
+              "event": "validation.needs_approval",
+              "stage": "approval"
+            }
+          ],
+          "next_action": "request_approval",
+          "status": "needs_approval"
+        },
+        "scenario": "task5_approval_required",
+        "source": "actual_gateway_execution"
+      },
+      {
+        "expected_status": "rate_limited",
+        "passed": true,
+        "request": {
+          "arguments": {
+            "amount": 200,
+            "customer_request": "The delivered item was damaged.",
+            "order_id": "ORD-1001",
+            "reason": "damaged"
+          },
+          "name": "refund.request",
+          "request_id": "evidence-rate-001",
+          "version": "1.0.0"
+        },
+        "result": {
+          "data": {},
+          "events": [],
+          "next_action": "retry_or_review",
+          "status": "rate_limited"
+        },
+        "scenario": "task5_rate_limit",
+        "source": "actual_gateway_execution"
+      },
+      {
+        "expected_status": "rate_limited",
+        "passed": true,
+        "request": {
+          "arguments": {
+            "amount": 200,
+            "customer_request": "The delivered item was damaged.",
+            "order_id": "ORD-1001",
+            "reason": "damaged"
+          },
+          "name": "refund.request",
+          "request_id": "rate-blocked",
+          "version": "1.0.0"
+        },
+        "result": {
+          "data": {},
+          "events": [],
+          "next_action": "retry_or_review",
+          "status": "rate_limited"
+        },
+        "scenario": "task5_rate_limit_verified",
+        "source": "actual_gateway_execution"
+      },
+      {
+        "expected_status": "ok",
+        "passed": true,
+        "request": {
+          "arguments": {
+            "amount": 200,
+            "customer_request": "The delivered item was damaged.",
+            "order_id": "ORD-1001",
+            "reason": "damaged"
+          },
+          "name": "refund.request",
+          "request_id": "evidence-refund-001",
+          "version": "1.0.0"
+        },
+        "result": {
+          "data": {
+            "refund_request_id": "REF-0001",
+            "status": "submitted_for_review"
+          },
+          "events": [
+            {
+              "event": "validation.started",
+              "tool": "refund.request"
+            },
+            {
+              "event": "validation.passed",
+              "stage": "schema"
+            },
+            {
+              "event": "validation.passed",
+              "stage": "business"
+            },
+            {
+              "event": "validation.passed",
+              "stage": "evidence"
+            },
+            {
+              "event": "validation.passed",
+              "stage": "approval"
+            },
+            {
+              "event": "validation.completed",
+              "valid": true
+            },
+            {
+              "event": "tool.execution.completed",
+              "tool": "refund.request"
+            }
+          ],
+          "next_action": "none",
+          "status": "ok"
+        },
+        "scenario": "task5_approved_refund",
+        "source": "actual_gateway_execution"
+      }
+    ],
+    "failed": 0,
+    "passed": 7,
+    "total": 7
+  },
+  "test_suite": {
+    "command": "python -m pytest -q",
+    "exit_code": 0,
+    "output_file": "evidence/full_test_output.txt",
+    "passed": true
+  }
+}

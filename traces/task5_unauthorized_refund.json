@@ -1,0 +1,23 @@
+{
+  "expected_status": "denied",
+  "passed": true,
+  "request": {
+    "arguments": {
+      "amount": 200,
+      "customer_request": "The delivered item was damaged.",
+      "order_id": "ORD-1001",
+      "reason": "damaged"
+    },
+    "name": "refund.request",
+    "request_id": "evidence-denied-001",
+    "version": "1.0.0"
+  },
+  "result": {
+    "data": {},
+    "events": [],
+    "next_action": "request_authorization",
+    "status": "denied"
+  },
+  "scenario": "task5_unauthorized_refund",
+  "source": "actual_gateway_execution"
+}

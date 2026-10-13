@@ -1,0 +1,23 @@
+{
+  "expected_status": "rate_limited",
+  "passed": true,
+  "request": {
+    "arguments": {
+      "amount": 200,
+      "customer_request": "The delivered item was damaged.",
+      "order_id": "ORD-1001",
+      "reason": "damaged"
+    },
+    "name": "refund.request",
+    "request_id": "rate-blocked",
+    "version": "1.0.0"
+  },
+  "result": {
+    "data": {},
+    "events": [],
+    "next_action": "retry_or_review",
+    "status": "rate_limited"
+  },
+  "scenario": "task5_rate_limit_verified",
+  "source": "actual_gateway_execution"
+}
